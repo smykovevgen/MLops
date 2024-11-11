@@ -1,0 +1,60 @@
+syntax = "proto3";
+package model_fitting;
+
+service ModelTransfer {
+  rpc GetAvModelTypes(AvailableModelTypesRequest) returns (AvailableModelTypesResponse);
+  rpc InitModel(InitModelRequest) returns (InitModelResponse);
+  rpc FitModel(FitModelRequest) returns (FitModelResponse);
+  rpc PredModel(PredictModelRequest) returns (PredictModelResponse);
+  rpc DelModel(DeleteModelRequest) returns (DeleteModelResponse);
+}
+
+message AvailableModelTypesRequest {
+  bool show = 1;
+}
+
+message AvailableModelTypesResponse {
+  message one_model_definition {
+      string model_name = 1;
+      string model_type = 2;
+  }
+  repeated one_model_definition list_of_models = 1;
+}
+
+message InitModelRequest {
+  string type_model = 1;
+  string user_model_name = 2;
+  map<string, string> params_string = 3;
+  map<string, float> params_float = 4;
+}
+
+message InitModelResponse {
+  string user_model_name = 1;
+  string type_model = 2;
+}
+
+message FitModelRequest{
+  repeated float X = 1;
+  repeated float y = 2;
+  string user_model_name = 3;
+}
+
+message FitModelResponse{
+  string status = 1;
+}
+
+message PredictModelRequest{
+  repeated float X = 1;
+  int32 n_feats = 2;
+  string user_model_name = 3;
+}
+message PredictModelResponse{
+  repeated float y = 1;
+}
+
+message DeleteModelRequest{
+  string user_model_name = 1;
+}
+message DeleteModelResponse{
+  string status = 1;
+}
